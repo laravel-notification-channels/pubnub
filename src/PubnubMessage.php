@@ -3,7 +3,6 @@
 namespace NotificationChannels\Pubnub;
 
 use InvalidArgumentException;
-use Pubnub\Pubnub;
 
 class PubnubMessage
 {
