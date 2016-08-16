@@ -21,13 +21,6 @@ class PubnubMessage
     public $channel;
 
     /**
-     * Content of the message
-     *
-     * @var string
-     */
-    public $content;
-
-    /**
      * If the message should be stored in the Pubnub history
      *
      * @var bool
@@ -42,11 +35,25 @@ class PubnubMessage
     public $badge;
 
     /**
-     * The title to display on the push notification (iOS)
+     * Title of the push notification
      *
      * @var string
      */
-    public $alert;
+    public $title;
+
+    /**
+     * Body of the push notification
+     *
+     * @var string
+     */
+    public $body;
+
+    /**
+     * The sound of the push notification
+     *
+     * @var string
+     */
+    public $sound;
 
     /**
      * Collection of PubnubMessage instances used for push notification platforms
@@ -69,19 +76,6 @@ class PubnubMessage
     public function channel($channel)
     {
         $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * Set the content the message should contain
-     *
-     * @param   string|array  $content
-     * @return  $this
-     */
-    public function content($content)
-    {
-        $this->content = $content;
 
         return $this;
     }
@@ -112,14 +106,40 @@ class PubnubMessage
     }
 
     /**
-     * Sets the alert to display on the push notification (iOS)
+     * Sets the title of the push notification
      *
-     * @param   string  $alert
+     * @param   string  $title
      * @return  $this
      */
-    public function alert($alert)
+    public function title($title)
     {
-        $this->alert = $alert;
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Sets the body of the push notification
+     *
+     * @param   string  $body
+     * @return  $this
+     */
+    public function body($body)
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * Sets the sound of the push notification
+     *
+     * @param   string  $sound
+     * @return  $this
+     */
+    public function sound($sound)
+    {
+        $this->sound = $sound;
 
         return $this;
     }
@@ -162,10 +182,6 @@ class PubnubMessage
                 return $this->toiOS();
         }
 
-        $payload = [
-            'content' => $this->content,
-        ];
-
         $this->extras->each(function(PubnubMessage $message) use (&$payload)
         {
             $payload = array_merge($payload, $message->toArray());
@@ -184,8 +200,12 @@ class PubnubMessage
         return [
             'pn_apns' => [
                 'aps' => [
-                    'alert' => $this->alert,
+                    'alert' => [
+                        'title' => $this->title,
+                        'body' => $this->body,
+                    ],
                     'badge' => $this->badge,
+                    'sound' => $this->sound,
                 ],
             ],
         ];
