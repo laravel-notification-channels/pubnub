@@ -56,6 +56,13 @@ class PubnubMessage
     public $sound;
 
     /**
+     * The icon used for the push notification (Android)
+     *
+     * @var string
+     */
+    public $icon;
+
+    /**
      * Collection of PubnubMessage instances used for push notification platforms
      *
      * @var \Illuminate\Support\Collection<PubnubMessage>
@@ -101,6 +108,18 @@ class PubnubMessage
     public function iOS()
     {
         $this->platform = 'iOS';
+
+        return $this;
+    }
+
+    /**
+     * Sets the platform to android
+     *
+     * @return  $this
+     */
+    public function android()
+    {
+        $this->platform = 'android';
 
         return $this;
     }
@@ -158,6 +177,19 @@ class PubnubMessage
     }
 
     /**
+     * Sets the icon to use for the push notification
+     *
+     * @param   string  $icon
+     * @return  $this
+     */
+    public function icon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
      * Sets the message used to create the iOS push notification
      *
      * @param   PubnubMessage   $message
@@ -166,6 +198,19 @@ class PubnubMessage
     public function withiOS(PubnubMessage $message)
     {
         $this->extras->push($message->iOS());
+
+        return $this;
+    }
+
+    /**
+     * Sets the message used to create the Android push notification
+     *
+     * @param   PubnubMessage   $message
+     * @return  $this
+     */
+    public function withAndroid(PubnubMessage $message)
+    {
+        $this->extras->push($message->android());
 
         return $this;
     }
@@ -180,7 +225,11 @@ class PubnubMessage
         switch($this->platform) {
             case 'iOS':
                 return $this->toiOS();
+            case 'android':
+                return $this->toAndroid();
         }
+
+        $payload = [];
 
         $this->extras->each(function(PubnubMessage $message) use (&$payload)
         {
@@ -206,6 +255,25 @@ class PubnubMessage
                     ],
                     'badge' => $this->badge,
                     'sound' => $this->sound,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Transforms the message into a payload suitable for GCM
+     *
+     * @return  array
+     */
+    protected function toAndroid()
+    {
+        return [
+            'pn_gmc' => [
+                'data' => [
+                    'title' => $this->title,
+                    'body' => $this->body,
+                    'sound' => $this->sound,
+                    'icon' => $this->icon,
                 ],
             ],
         ];
