@@ -75,7 +75,7 @@ class PubnubMessage
      *
      * @var int
      */
-    public $delay;
+    public $delay = 0;
 
     /**
      * Collection of PubnubMessage instances used for push notification platforms
