@@ -2,6 +2,7 @@
 
 namespace NotificationChannels\Pubnub;
 
+use InvalidArgumentException;
 use Pubnub\Pubnub;
 
 class PubnubMessage
@@ -63,6 +64,20 @@ class PubnubMessage
     public $icon;
 
     /**
+     * The type of notification (Windows)
+     *
+     * @var string
+     */
+    public $type;
+
+    /**
+     * The delay in seconds for delivering the push notification (Windows)
+     *
+     * @var int
+     */
+    public $delay;
+
+    /**
      * Collection of PubnubMessage instances used for push notification platforms
      *
      * @var \Illuminate\Support\Collection<PubnubMessage>
@@ -120,6 +135,18 @@ class PubnubMessage
     public function android()
     {
         $this->platform = 'android';
+
+        return $this;
+    }
+
+    /**
+     * Sets the platform to windows
+     *
+     * @return  $this
+     */
+    public function windows()
+    {
+        $this->platform = 'windows';
 
         return $this;
     }
@@ -190,6 +217,39 @@ class PubnubMessage
     }
 
     /**
+     * Sets the type of notification (Windows)
+     *
+     * @throws \InvalidArgumentException
+     * @param   string  $type
+     * @return  $this
+     */
+    public function type($type)
+    {
+        if ( ! in_array($type, ['toast', 'flip', 'cycle', 'iconic']))
+            throw new InvalidArgumentException("Invalid type given [{$type}]. Expected 'toast', 'flip', 'cycle' or 'iconic'.");
+
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Sets the delay for delivering the notification (Windows)
+     *
+     * @param   int $delay
+     * @return  $this
+     */
+    public function delay($delay)
+    {
+        if ( ! in_array($delay, [0, 450, 900]))
+            throw new InvalidArgumentException("Invalid delay give [{$delay}]. Expected 0, 450 or 900.");
+
+        $this->delay = $delay;
+
+        return $this;
+    }
+
+    /**
      * Sets the message used to create the iOS push notification
      *
      * @param   PubnubMessage   $message
@@ -216,6 +276,19 @@ class PubnubMessage
     }
 
     /**
+     * Sets the message used to create the Windows push notification
+     *
+     * @param   PubnubMessage   $message
+     * @return  $this
+     */
+    public function withWindows(PubnubMessage $message)
+    {
+        $this->extras->push($message->windows());
+
+        return $this;
+    }
+
+    /**
      * Transforms the message into an suitable payload for Pubnub\Pubnub
      *
      * @return  array
@@ -227,6 +300,8 @@ class PubnubMessage
                 return $this->toiOS();
             case 'android':
                 return $this->toAndroid();
+            case 'windows':
+                return $this->toWindows();
         }
 
         $payload = [];
@@ -275,6 +350,23 @@ class PubnubMessage
                     'sound' => $this->sound,
                     'icon' => $this->icon,
                 ],
+            ],
+        ];
+    }
+
+    /**
+     * Transforms the message into a payload suitable for MPNS
+     *
+     * @return  array
+     */
+    protected function toWindows()
+    {
+        return [
+            'pn_mpns' => [
+                'title' => $this->title,
+                'body' => $this->body,
+                'type' => $this->type,
+                'delay' => $this->delay,
             ],
         ];
     }
