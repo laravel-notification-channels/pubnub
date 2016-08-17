@@ -83,6 +83,13 @@ class PubnubMessage
      */
     protected $extras;
 
+    /**
+     * Extra data to add to the payload
+     *
+     * @var array
+     */
+    protected $data = [];
+
     public function __construct()
     {
         $this->extras = collect();
@@ -249,6 +256,20 @@ class PubnubMessage
     }
 
     /**
+     * Sets optional extra data to add to the payload
+     *
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function setData($key, $value)
+    {
+        $this->data[$key] = $value;
+
+        return $this;
+    }
+
+    /**
      * Sets the message used to create the iOS push notification
      *
      * @param   PubnubMessage   $message
@@ -303,7 +324,7 @@ class PubnubMessage
                 return $this->toWindows();
         }
 
-        $payload = [];
+        $payload = $this->data;
 
         $this->extras->each(function(PubnubMessage $message) use (&$payload)
         {
@@ -321,7 +342,7 @@ class PubnubMessage
     protected function toiOS()
     {
         return [
-            'pn_apns' => [
+            'pn_apns' => array_merge($this->data, [
                 'aps' => [
                     'alert' => [
                         'title' => $this->title,
@@ -330,7 +351,7 @@ class PubnubMessage
                     'badge' => $this->badge,
                     'sound' => $this->sound,
                 ],
-            ],
+            ]),
         ];
     }
 
@@ -343,12 +364,12 @@ class PubnubMessage
     {
         return [
             'pn_gmc' => [
-                'data' => [
+                'data' => array_merge($this->data, [
                     'title' => $this->title,
                     'body' => $this->body,
                     'sound' => $this->sound,
                     'icon' => $this->icon,
-                ],
+                ]),
             ],
         ];
     }
@@ -361,12 +382,12 @@ class PubnubMessage
     protected function toWindows()
     {
         return [
-            'pn_mpns' => [
+            'pn_mpns' => array_merge($this->data, [
                 'title' => $this->title,
                 'body' => $this->body,
                 'type' => $this->type,
                 'delay' => $this->delay,
-            ],
+            ]),
         ];
     }
 }

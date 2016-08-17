@@ -155,4 +155,35 @@ class MessageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Arr::has($this->message->toArray(), 'pn_gmc.data'));
         $this->assertTrue(Arr::has($this->message->toArray(), 'pn_mpns'));
     }
+
+    /** @test */
+    public function it_can_set_extra_data()
+    {
+        $this->message
+            ->setData('my_data', 'My Extra Data')
+            ->withiOS(
+                (new PubnubMessage())
+                    ->setData('ios_data', 'The iOS data')
+            )
+            ->withAndroid(
+                (new PubnubMessage())
+                    ->setData('android_data', 'The android data')
+            )
+            ->withWindows(
+                (new PubnubMessage())
+                    ->setData('windows_data', 'The windows data')
+            );
+
+        $this->assertTrue(Arr::has($this->message->toArray(), 'my_data'));
+        $this->assertEquals('My Extra Data', Arr::get($this->message->toArray(), 'my_data'));
+
+        $this->assertTrue(Arr::has($this->message->toArray(), 'pn_apns.ios_data'));
+        $this->assertEquals('The iOS data', Arr::get($this->message->toArray(), 'pn_apns.ios_data'));
+
+        $this->assertTrue(Arr::has($this->message->toArray(), 'pn_gmc.data.android_data'));
+        $this->assertEquals('The android data', Arr::get($this->message->toArray(), 'pn_gmc.data.android_data'));
+
+        $this->assertTrue(Arr::has($this->message->toArray(), 'pn_mpns.windows_data'));
+        $this->assertEquals('The windows data', Arr::get($this->message->toArray(), 'pn_mpns.windows_data'));
+    }
 }
