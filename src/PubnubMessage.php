@@ -324,7 +324,10 @@ class PubnubMessage
                 return $this->toWindows();
         }
 
-        $payload = $this->data;
+        $payload = array_merge($this->data, [
+            'body' => $this->body,
+            'title' => $this->title,
+        ]);
 
         $this->extras->each(function(PubnubMessage $message) use (&$payload)
         {

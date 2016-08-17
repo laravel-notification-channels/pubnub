@@ -32,6 +32,7 @@ class MessageTest extends PHPUnit_Framework_TestCase
     {
         $this->message->title('the title');
 
+        $this->assertEquals('the title', Arr::get($this->message->toArray(), 'title'));
         $this->assertEquals('the title', Arr::get($this->message->iOS()->toArray(), 'pn_apns.aps.alert.title'));
         $this->assertEquals('the title', Arr::get($this->message->android()->toArray(), 'pn_gmc.data.title'));
         $this->assertEquals('the title', Arr::get($this->message->windows()->toArray(), 'pn_mpns.title'));
@@ -42,6 +43,7 @@ class MessageTest extends PHPUnit_Framework_TestCase
     {
         $this->message->body('the content');
 
+        $this->assertEquals('the content', Arr::get($this->message->toArray(), 'body'));
         $this->assertEquals('the content', Arr::get($this->message->iOS()->toArray(), 'pn_apns.aps.alert.body'));
         $this->assertEquals('the content', Arr::get($this->message->android()->toArray(), 'pn_gmc.data.body'));
         $this->assertEquals('the content', Arr::get($this->message->windows()->toArray(), 'pn_mpns.body'));
