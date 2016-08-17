@@ -49,7 +49,7 @@ class PubnubMessage
     public $body;
 
     /**
-     * The sound of the push notification
+     * The sound of the push notification (iOS, Android)
      *
      * @var string
      */
