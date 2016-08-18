@@ -67,7 +67,8 @@ class InvoicePaid extends Notification
     {
         return (new PubnubMessage())
             ->channel('my_channel')
-            ->content(['message' => 'You just paid $4.99 to ACME Ltd.']);
+            ->title('My message title')
+            ->body('My message body');
     }
 }
 ```
@@ -91,9 +92,17 @@ class User extends Model
 
 ### Available methods
 
-`channel()`: Specifies the channel the message should be sent to.
-`content()`: Sets the content of the payload. May be either a string or array (which will later be encoded as json).
-`storeInHistory()`: If the message should be stored in the Pubnub history.
+ - `channel('')`: Specifies the channel the message should be sent to
+ - `title('')`: Sets the title of the message
+ - `body('')`: Sets the body of the message
+ - `storeInHistory(true)`: If the message should be stored in the Pubnub history
+ - `badge(1)`: Sets the number to display on the push notification's badge (iOS)
+ - `sound('')`: Sets the sound for the push notification (iOS, Android)
+ - `icon('')`: Sets the push notification icon (Android)
+ - `type('')`: Sets the type of push notification (Windows)
+ - `delay(450)`: Sets the delay in seconds for the push notification (Windows)
+ - `setData($key, $value)`: Adds any extra data to the payload you may need
+ - `setOption($key, $value)`: Sets any option to the push notification ([iOS][reference-ios], [Android][reference-android], Windows) 
 
 ## Changelog
 
@@ -121,3 +130,6 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+[reference-ios]: https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/TheNotificationPayload.html#//apple_ref/doc/uid/TP40008194-CH107-SW1
+[reference-android]: https://developers.google.com/cloud-messaging/http-server-ref#notification-payload-support
