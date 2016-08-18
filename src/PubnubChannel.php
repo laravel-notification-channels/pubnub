@@ -40,8 +40,6 @@ class PubnubChannel
             throw CouldNotSendNotification::missingChannel();
         }
 
-        dd($message->toArray());
-
         try {
             $this->pubnub->publish($channel, $message->toArray(), $message->storeInHistory);
         } catch (PubnubException $exception) {
