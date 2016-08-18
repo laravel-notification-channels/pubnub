@@ -6,6 +6,12 @@ use InvalidArgumentException;
 
 class PubnubMessage
 {
+    const PLATFORM_iOS = 'iOS';
+
+    const PLATFORM_ANDROID = 'android';
+
+    const PLATFORM_WINDOWS = 'windows';
+
     /**
      * Platform the push notification is using
      *
@@ -90,6 +96,13 @@ class PubnubMessage
      */
     protected $data = [];
 
+    /**
+     * Extra options to add to the push notification
+     *
+     * @var array
+     */
+    protected $options = [];
+
     public function __construct()
     {
         $this->extras = collect();
@@ -128,7 +141,7 @@ class PubnubMessage
      */
     public function iOS()
     {
-        $this->platform = 'iOS';
+        $this->platform = static::PLATFORM_iOS;
 
         return $this;
     }
@@ -140,7 +153,7 @@ class PubnubMessage
      */
     public function android()
     {
-        $this->platform = 'android';
+        $this->platform = static::PLATFORM_ANDROID;
 
         return $this;
     }
@@ -152,7 +165,7 @@ class PubnubMessage
      */
     public function windows()
     {
-        $this->platform = 'windows';
+        $this->platform = static::PLATFORM_WINDOWS;
 
         return $this;
     }
@@ -270,6 +283,41 @@ class PubnubMessage
     }
 
     /**
+     * Sets optional extra options onto the push notification payload (W
+     *
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function setOption($key, $value)
+    {
+        $this->options[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getData()
+    {
+        if ($this->platform === static::PLATFORM_iOS)
+        {
+            return $this->data;
+        }
+
+        return array_merge($this->data, $this->options);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
      * Sets the message used to create the iOS push notification
      *
      * @param   PubnubMessage   $message
@@ -345,15 +393,15 @@ class PubnubMessage
     protected function toiOS()
     {
         return [
-            'pn_apns' => array_merge($this->data, [
-                'aps' => [
+            'pn_apns' => array_merge($this->getData(), [
+                'aps' => array_merge($this->getOptions(), [
                     'alert' => [
                         'title' => $this->title,
                         'body' => $this->body,
                     ],
                     'badge' => $this->badge,
                     'sound' => $this->sound,
-                ],
+                ]),
             ]),
         ];
     }
@@ -367,7 +415,7 @@ class PubnubMessage
     {
         return [
             'pn_gmc' => [
-                'data' => array_merge($this->data, [
+                'data' => array_merge($this->getData(), [
                     'title' => $this->title,
                     'body' => $this->body,
                     'sound' => $this->sound,
@@ -385,7 +433,7 @@ class PubnubMessage
     protected function toWindows()
     {
         return [
-            'pn_mpns' => array_merge($this->data, [
+            'pn_mpns' => array_merge($this->getData(), [
                 'title' => $this->title,
                 'body' => $this->body,
                 'type' => $this->type,

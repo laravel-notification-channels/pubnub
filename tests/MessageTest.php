@@ -188,4 +188,31 @@ class MessageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Arr::has($this->message->toArray(), 'pn_mpns.windows_data'));
         $this->assertEquals('The windows data', Arr::get($this->message->toArray(), 'pn_mpns.windows_data'));
     }
+
+    /** @test */
+    public function it_can_set_custom_options_on_the_push_notification()
+    {
+        $this->message
+            ->withiOS(
+                (new PubnubMessage())
+                    ->setOption('content-available', 1)
+            )
+            ->withAndroid(
+                (new PubnubMessage())
+                    ->setOption('color', '#ffffff')
+            )
+            ->withWindows(
+                (new PubnubMessage())
+                    ->setOption('image', 'MyImage')
+            );
+
+        $this->assertTrue(Arr::has($this->message->toArray(), 'pn_apns.aps.content-available'));
+        $this->assertEquals(1, Arr::get($this->message->toArray(), 'pn_apns.aps.content-available'));
+
+        $this->assertTrue(Arr::has($this->message->toArray(), 'pn_gmc.data.color'));
+        $this->assertEquals('#ffffff', Arr::get($this->message->toArray(), 'pn_gmc.data.color'));
+
+        $this->assertTrue(Arr::has($this->message->toArray(), 'pn_mpns.image'));
+        $this->assertEquals('MyImage', Arr::get($this->message->toArray(), 'pn_mpns.image'));
+    }
 }
