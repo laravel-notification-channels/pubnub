@@ -3,6 +3,7 @@ language: php
 php:
   - 5.6
   - 7.0
+  - 7.1
 
 env:
   matrix:
@@ -18,3 +19,8 @@ script:
 
 after_script:
   - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+tools:
+  external_code_coverage: true
