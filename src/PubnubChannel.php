@@ -2,7 +2,6 @@
 
 namespace NotificationChannels\Pubnub;
 
-use Illuminate\Events\Dispatcher as EventDispatcher;
 use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
 use Illuminate\Notifications\Notification;
 use Pubnub\Pubnub;

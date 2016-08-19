@@ -13,91 +13,91 @@ class PubnubMessage
     const PLATFORM_WINDOWS = 'windows';
 
     /**
-     * Platform the push notification is using
+     * Platform the push notification is using.
      *
      * @var string
      */
     public $platform;
 
     /**
-     * Channel the message should be sent to
+     * Channel the message should be sent to.
      *
      * @var string
      */
     public $channel;
 
     /**
-     * If the message should be stored in the Pubnub history
+     * If the message should be stored in the Pubnub history.
      *
      * @var bool
      */
     public $storeInHistory = true;
 
     /**
-     * The number to display on the push notification badge (iOS)
+     * The number to display on the push notification badge (iOS).
      *
      * @var int
      */
     public $badge;
 
     /**
-     * Title of the push notification
+     * Title of the push notification.
      *
      * @var string
      */
     public $title;
 
     /**
-     * Body of the push notification
+     * Body of the push notification.
      *
      * @var string
      */
     public $body;
 
     /**
-     * The sound of the push notification (iOS, Android)
+     * The sound of the push notification (iOS, Android).
      *
      * @var string
      */
     public $sound;
 
     /**
-     * The icon used for the push notification (Android)
+     * The icon used for the push notification (Android).
      *
      * @var string
      */
     public $icon;
 
     /**
-     * The type of notification (Windows)
+     * The type of notification (Windows).
      *
      * @var string
      */
     public $type;
 
     /**
-     * The delay in seconds for delivering the push notification (Windows)
+     * The delay in seconds for delivering the push notification (Windows).
      *
      * @var int
      */
     public $delay = 0;
 
     /**
-     * Collection of PubnubMessage instances used for push notification platforms
+     * Collection of PubnubMessage instances used for push notification platforms.
      *
      * @var \Illuminate\Support\Collection<PubnubMessage>
      */
     protected $extras;
 
     /**
-     * Extra data to add to the payload
+     * Extra data to add to the payload.
      *
      * @var array
      */
     protected $data = [];
 
     /**
-     * Extra options to add to the push notification
+     * Extra options to add to the push notification.
      *
      * @var array
      */
@@ -109,7 +109,7 @@ class PubnubMessage
     }
 
     /**
-     * Set the channel the message should be sent to
+     * Set the channel the message should be sent to.
      *
      * @param   string  $channel
      * @return  $this
@@ -122,7 +122,7 @@ class PubnubMessage
     }
 
     /**
-     * Set the option to store the current message in the Pubnub history
+     * Set the option to store the current message in the Pubnub history.
      *
      * @param   bool    $shouldStore
      * @return  $this
@@ -135,7 +135,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the platform to iOS
+     * Sets the platform to iOS.
      *
      * @return  $this
      */
@@ -147,7 +147,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the platform to android
+     * Sets the platform to android.
      *
      * @return  $this
      */
@@ -159,7 +159,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the platform to windows
+     * Sets the platform to windows.
      *
      * @return  $this
      */
@@ -171,7 +171,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the title of the push notification
+     * Sets the title of the push notification.
      *
      * @param   string  $title
      * @return  $this
@@ -184,7 +184,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the body of the push notification
+     * Sets the body of the push notification.
      *
      * @param   string  $body
      * @return  $this
@@ -197,7 +197,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the sound of the push notification
+     * Sets the sound of the push notification.
      *
      * @param   string  $sound
      * @return  $this
@@ -210,7 +210,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the number to display on the push notification badge (iOS)
+     * Sets the number to display on the push notification badge (iOS).
      *
      * @param   int $badge
      * @return  $this
@@ -223,7 +223,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the icon to use for the push notification
+     * Sets the icon to use for the push notification.
      *
      * @param   string  $icon
      * @return  $this
@@ -236,7 +236,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the type of notification (Windows)
+     * Sets the type of notification (Windows).
      *
      * @throws \InvalidArgumentException
      * @param   string  $type
@@ -244,8 +244,9 @@ class PubnubMessage
      */
     public function type($type)
     {
-        if ( ! in_array($type, ['toast', 'flip', 'cycle', 'iconic']))
+        if (! in_array($type, ['toast', 'flip', 'cycle', 'iconic'])) {
             throw new InvalidArgumentException("Invalid type given [{$type}]. Expected 'toast', 'flip', 'cycle' or 'iconic'.");
+        }
 
         $this->type = $type;
 
@@ -253,15 +254,16 @@ class PubnubMessage
     }
 
     /**
-     * Sets the delay for delivering the notification (Windows)
+     * Sets the delay for delivering the notification (Windows).
      *
      * @param   int $delay
      * @return  $this
      */
     public function delay($delay)
     {
-        if ( ! in_array($delay, [0, 450, 900]))
+        if (! in_array($delay, [0, 450, 900])) {
             throw new InvalidArgumentException("Invalid delay give [{$delay}]. Expected 0, 450 or 900.");
+        }
 
         $this->delay = $delay;
 
@@ -269,7 +271,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets optional extra data to add to the payload
+     * Sets optional extra data to add to the payload.
      *
      * @param $key
      * @param $value
@@ -283,7 +285,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets optional extra options onto the push notification payload (W
+     * Sets optional extra options onto the push notification payload (W.
      *
      * @param $key
      * @param $value
@@ -301,8 +303,7 @@ class PubnubMessage
      */
     protected function getData()
     {
-        if ($this->platform === static::PLATFORM_iOS)
-        {
+        if ($this->platform === static::PLATFORM_iOS) {
             return $this->data;
         }
 
@@ -318,7 +319,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the message used to create the iOS push notification
+     * Sets the message used to create the iOS push notification.
      *
      * @param   PubnubMessage   $message
      * @return  $this
@@ -331,7 +332,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the message used to create the Android push notification
+     * Sets the message used to create the Android push notification.
      *
      * @param   PubnubMessage   $message
      * @return  $this
@@ -344,7 +345,7 @@ class PubnubMessage
     }
 
     /**
-     * Sets the message used to create the Windows push notification
+     * Sets the message used to create the Windows push notification.
      *
      * @param   PubnubMessage   $message
      * @return  $this
@@ -357,13 +358,13 @@ class PubnubMessage
     }
 
     /**
-     * Transforms the message into an suitable payload for Pubnub\Pubnub
+     * Transforms the message into an suitable payload for Pubnub\Pubnub.
      *
      * @return  array
      */
     public function toArray()
     {
-        switch($this->platform) {
+        switch ($this->platform) {
             case 'iOS':
                 return $this->toiOS();
             case 'android':
@@ -377,8 +378,7 @@ class PubnubMessage
             'title' => $this->title,
         ]);
 
-        $this->extras->each(function(PubnubMessage $message) use (&$payload)
-        {
+        $this->extras->each(function (PubnubMessage $message) use (&$payload) {
             $payload = array_merge($payload, $message->toArray());
         });
 
@@ -386,7 +386,7 @@ class PubnubMessage
     }
 
     /**
-     * Transforms the message into an array suitable for the payload
+     * Transforms the message into an array suitable for the payload.
      *
      * @return  array
      */
@@ -407,7 +407,7 @@ class PubnubMessage
     }
 
     /**
-     * Transforms the message into a payload suitable for GCM
+     * Transforms the message into a payload suitable for GCM.
      *
      * @return  array
      */
@@ -426,7 +426,7 @@ class PubnubMessage
     }
 
     /**
-     * Transforms the message into a payload suitable for MPNS
+     * Transforms the message into a payload suitable for MPNS.
      *
      * @return  array
      */

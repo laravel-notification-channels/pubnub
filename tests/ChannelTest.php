@@ -2,14 +2,9 @@
 
 namespace NotificationChannels\Pubnub\Test;
 
-use Illuminate\Events\Dispatcher as EventDispatcher;
-use Illuminate\Notifications\Events\NotificationSending;
-use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Notifications\Notification;
 use Mockery;
 use Illuminate\Notifications\Notifiable;
-use NotificationChannels\Pubnub\Events\MessageWasSent;
-use NotificationChannels\Pubnub\Events\SendingMessage;
 use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
 use NotificationChannels\Pubnub\PubnubChannel;
 use NotificationChannels\Pubnub\PubnubMessage;
