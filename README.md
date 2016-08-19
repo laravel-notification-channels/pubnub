@@ -1,6 +1,14 @@
 # PubNub Notifications Channel for Laravel 5.3 [WIP]
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-notification-channels/pubnub.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/pubnub)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/laravel-notification-channels/pubnub/master.svg?style=flat-square)](https://travis-ci.org/laravel-notification-channels/pubnub)
+[![StyleCI](https://styleci.io/repos/65854225/shield)](https://styleci.io/repos/65854225)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/:sensio_labs_id.svg?style=flat-square)](https://insight.sensiolabs.com/projects/:sensio_labs_id)
+[![Quality Score](https://img.shields.io/scrutinizer/g/laravel-notification-channels/pubnub.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/pubnub)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/pubnub/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/pubnub/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/pubnub.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/pubnub)
 
-PubNub Notifications Channel for Laravel 5.3
+PubNub Notifications Channel for Laravel 5.3. This channel allows you to send message payloads as well as push notifications to iOS, Android and Windows using PubNub.
 
 ## Contents
 
@@ -14,7 +22,6 @@ PubNub Notifications Channel for Laravel 5.3
 - [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
-
 
 ## Installation
 
