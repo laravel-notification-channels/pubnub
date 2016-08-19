@@ -14,7 +14,7 @@ class PubnubServiceProvider extends ServiceProvider
     {
         $this->app->when(PubnubChannel::class)
             ->needs(Pubnub::class)
-            ->give(function() {
+            ->give(function () {
                 $config = config('services.pubnub');
 
                 return new Pubnub(
