@@ -2,6 +2,7 @@
 
 namespace NotificationChannels\Pubnub;
 
+use Illuminate\Events\Dispatcher as EventDispatcher;
 use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
 use NotificationChannels\Pubnub\Events\MessageWasSent;
 use NotificationChannels\Pubnub\Events\SendingMessage;
@@ -14,9 +15,13 @@ class PubnubChannel
     /** @\Pubnub\Pubnub */
     protected $pubnub;
 
-    public function __construct(Pubnub $pubnub)
+    /** @var EventDispatcher */
+    protected $event;
+
+    public function __construct(Pubnub $pubnub, EventDispatcher $event)
     {
         $this->pubnub = $pubnub;
+        $this->event = $event;
     }
 
     /**
@@ -29,8 +34,7 @@ class PubnubChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        if ( ! $this->shouldSendMessage($notifiable, $notification))
-            return;
+        if ( ! $this->shouldSendMessage($notifiable, $notification)) return;
 
         $message = $notification->toPubnub($notifiable);
 
@@ -46,7 +50,7 @@ class PubnubChannel
             throw CouldNotSendNotification::pubnubRespondedWithAnError($exception);
         }
 
-        event(new MessageWasSent($notifiable, $notification));
+        $this->event->fire(new MessageWasSent($notifiable, $notification));
     }
 
     /**
@@ -58,6 +62,6 @@ class PubnubChannel
      */
     protected function shouldSendMessage($notifiable, Notification $notification)
     {
-        return event(new SendingMessage($notifiable, $notification), [], true) !== false;
+        return $this->event->fire(new SendingMessage($notifiable, $notification), [], true) !== false;
     }
 }
