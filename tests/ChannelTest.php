@@ -3,6 +3,8 @@
 namespace NotificationChannels\Pubnub\Test;
 
 use Illuminate\Events\Dispatcher as EventDispatcher;
+use Illuminate\Notifications\Events\NotificationSending;
+use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Notifications\Notification;
 use Mockery;
 use Illuminate\Notifications\Notifiable;
@@ -19,17 +21,13 @@ class ChannelTest extends PHPUnit_Framework_TestCase
     /** @var Pubnub */
     protected $pubnub;
 
-    /** @var EventDispatcher */
-    protected $event;
-
     /** @var PubnubChannel */
     protected $channel;
 
     public function setUp()
     {
         $this->pubnub = Mockery::mock(Pubnub::class);
-        $this->event = Mockery::mock(EventDispatcher::class);
-        $this->channel = new PubnubChannel($this->pubnub, $this->event);
+        $this->channel = new PubnubChannel($this->pubnub);
     }
 
     public function tearDown()
@@ -53,16 +51,6 @@ class ChannelTest extends PHPUnit_Framework_TestCase
                 true
             );
 
-        $this->event->shouldReceive('fire')
-            ->once()
-            ->with(SendingMessage::class, [], true)
-            ->andReturn(true);
-
-        $this->event->shouldReceive('fire')
-            ->once()
-            ->with(MessageWasSent::class)
-            ->andReturn(true);
-
         $this->channel->send(new TestRoutedNotifiable(), new TestRoutedNotification());
     }
 
@@ -80,16 +68,6 @@ class ChannelTest extends PHPUnit_Framework_TestCase
                 true
             );
 
-        $this->event->shouldReceive('fire')
-            ->once()
-            ->with(SendingMessage::class, [], true)
-            ->andReturn(true);
-
-        $this->event->shouldReceive('fire')
-            ->once()
-            ->with(MessageWasSent::class)
-            ->andReturn(true);
-
         $this->channel->send(new TestNotifiable(), new TestNotification());
     }
 
@@ -99,16 +77,6 @@ class ChannelTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException(CouldNotSendNotification::class);
 
         $this->pubnub->shouldReceive('publish')->never();
-
-        $this->event->shouldReceive('fire')
-            ->once()
-            ->with(SendingMessage::class, [], true)
-            ->andReturn(true);
-
-        $this->event->shouldReceive('fire')
-            ->never()
-            ->with(MessageWasSent::class)
-            ->andReturn(true);
 
         $this->channel->send(new TestNotifiable(), new TestRoutedNotification());
     }
