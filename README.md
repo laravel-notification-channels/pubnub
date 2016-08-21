@@ -97,6 +97,45 @@ class User extends Model
 }
 ```
 
+Sending a push notification. You may chain any of the `withiOS()`, `withAndroid()` and `withWindows()` methods to add push notifications to the message with each of the platforms.
+
+```php
+use NotificationChannels\Pubnub\PubnubChannel;
+use NotificationChannels\Pubnub\PubnubMessage;
+use Illuminate\Notifications\Notification;
+
+class InvoicePaid extends Notification
+{
+    public function via($notifiable)
+    {
+        return [PubnubChannel::class];
+    }
+
+    public function toPubnub($notifiable)
+    {
+        return (new PubnubMessage())
+            ->channel('my_channel')
+            ->title('Alert: Jon Doe Sent You A Message')
+            ->body('Hi')
+            ->withiOS(
+                (new PubnubMessage())
+                    ->sound('default')
+                    ->badge(1)
+            )
+            ->withAndroid(
+                (new PubnubMessage())
+                    ->sound('notification')
+                    ->icon('myicon')
+            )
+            ->withWindows(
+                (new PubnubMessage())
+                    ->type('toast')
+                    ->delay(450);
+            );
+    }
+}
+```
+
 ### Available methods
 
  - `channel('')`: Specifies the channel the message should be sent to
@@ -110,6 +149,9 @@ class User extends Model
  - `delay(450)`: Sets the delay in seconds for the push notification (Windows)
  - `setData($key, $value)`: Adds any extra data to the payload you may need
  - `setOption($key, $value)`: Sets any option to the push notification ([iOS][reference-ios], [Android][reference-android], Windows) 
+ - `withiOS(PubnubMessage $message)`: Sets the push notification for iOS
+ - `withAndroid(PubnubMessage $message)`: Sets the push notification for Android
+ - `withWindows(PubnubMessage $message)`: Sets the push notification for Windows
 
 ## Changelog
 
