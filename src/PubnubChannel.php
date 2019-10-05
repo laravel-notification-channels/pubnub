@@ -2,10 +2,10 @@
 
 namespace NotificationChannels\Pubnub;
 
-use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
-use Illuminate\Notifications\Notification;
 use Pubnub\Pubnub;
 use Pubnub\PubnubException;
+use Illuminate\Notifications\Notification;
+use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
 
 class PubnubChannel
 {
