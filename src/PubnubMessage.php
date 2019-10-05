@@ -324,7 +324,7 @@ class PubnubMessage
      * @param   PubnubMessage   $message
      * @return  $this
      */
-    public function withiOS(PubnubMessage $message)
+    public function withiOS(self $message)
     {
         $this->extras->push($message->iOS());
 
@@ -337,7 +337,7 @@ class PubnubMessage
      * @param   PubnubMessage   $message
      * @return  $this
      */
-    public function withAndroid(PubnubMessage $message)
+    public function withAndroid(self $message)
     {
         $this->extras->push($message->android());
 
@@ -350,7 +350,7 @@ class PubnubMessage
      * @param   PubnubMessage   $message
      * @return  $this
      */
-    public function withWindows(PubnubMessage $message)
+    public function withWindows(self $message)
     {
         $this->extras->push($message->windows());
 
@@ -378,7 +378,7 @@ class PubnubMessage
             'title' => $this->title,
         ]);
 
-        $this->extras->each(function (PubnubMessage $message) use (&$payload) {
+        $this->extras->each(function (self $message) use (&$payload) {
             $payload = array_merge($payload, $message->toArray());
         });
 
