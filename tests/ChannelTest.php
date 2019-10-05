@@ -2,16 +2,16 @@
 
 namespace NotificationChannels\Pubnub\Test;
 
-use Illuminate\Notifications\Notification;
 use Mockery;
+use Pubnub\Pubnub;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Notifications\Notifiable;
-use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
+use Illuminate\Notifications\Notification;
 use NotificationChannels\Pubnub\PubnubChannel;
 use NotificationChannels\Pubnub\PubnubMessage;
-use PHPUnit_Framework_TestCase;
-use Pubnub\Pubnub;
+use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
 
-class ChannelTest extends PHPUnit_Framework_TestCase
+class ChannelTest extends TestCase
 {
     /** @var Pubnub */
     protected $pubnub;
@@ -19,13 +19,13 @@ class ChannelTest extends PHPUnit_Framework_TestCase
     /** @var PubnubChannel */
     protected $channel;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->pubnub = Mockery::mock(Pubnub::class);
         $this->channel = new PubnubChannel($this->pubnub);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
 
@@ -69,7 +69,7 @@ class ChannelTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_throws_an_exception_when_no_channel_is_supplied()
     {
-        $this->setExpectedException(CouldNotSendNotification::class);
+        $this->expectException(CouldNotSendNotification::class);
 
         $this->pubnub->shouldReceive('publish')->never();
 
