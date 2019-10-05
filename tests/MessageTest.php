@@ -2,17 +2,17 @@
 
 namespace NotificationChannels\Pubnub\Test;
 
-use InvalidArgumentException;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use NotificationChannels\Pubnub\PubnubMessage;
-use PHPUnit_Framework_TestCase;
 
-class MessageTest extends PHPUnit_Framework_TestCase
+class MessageTest extends TestCase
 {
     /** @var \NotificationChannels\Pubnub\PubnubMessage */
     protected $message;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -117,7 +117,7 @@ class MessageTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_will_throw_an_exception_when_the_wrong_type_is_used()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->message->type('invalid');
     }
@@ -133,7 +133,7 @@ class MessageTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_will_throw_an_exception_when_the_wrong_delay_is_used()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->message->delay(1000);
     }
