@@ -36,7 +36,7 @@ class PubnubChannel
         }
 
         try {
-            $this->pubnub->publish($channel, $message->toArray(), $message->storeInHistory);
+            $this->pubnub->publish()->channel($channel)->message($message->toArray())->sync();
         } catch (PubNubException $exception) {
             throw CouldNotSendNotification::pubnubRespondedWithAnError($exception);
         }

@@ -16,12 +16,12 @@ class PubnubServiceProvider extends ServiceProvider
             ->needs(PubNub::class)
             ->give(function () {
                 $config = config('services.pubnub');
-
-                return new PubNub(
-                    $config['publish_key'],
-                    $config['subscribe_key'],
-                    $config['secret_key']
-                );
+                $pnconf = new PNConfiguration();
+                $pubnub = new PubNub($pnconf);
+                $pnconf->setSubscribeKey($config['subscribe_key']);
+                $pnconf->setPublishKey($config['publish_key']);
+                $pnconf->setUuid("avoo-crm-admin");
+                return $pubnub;
             });
     }
 }
