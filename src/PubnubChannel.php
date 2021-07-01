@@ -2,8 +2,8 @@
 
 namespace NotificationChannels\Pubnub;
 
-use Pubnub\Pubnub;
-use Pubnub\PubnubException;
+use PubNub\PubNub;
+use Pubnub\PubNubException;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Pubnub\Exceptions\CouldNotSendNotification;
 
@@ -12,7 +12,7 @@ class PubnubChannel
     /** @\Pubnub\Pubnub */
     protected $pubnub;
 
-    public function __construct(Pubnub $pubnub)
+    public function __construct(PubNub $pubnub)
     {
         $this->pubnub = $pubnub;
     }
@@ -37,7 +37,7 @@ class PubnubChannel
 
         try {
             $this->pubnub->publish($channel, $message->toArray(), $message->storeInHistory);
-        } catch (PubnubException $exception) {
+        } catch (PubNubException $exception) {
             throw CouldNotSendNotification::pubnubRespondedWithAnError($exception);
         }
     }

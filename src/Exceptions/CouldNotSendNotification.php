@@ -3,11 +3,11 @@
 namespace NotificationChannels\Pubnub\Exceptions;
 
 use Exception;
-use Pubnub\PubnubException;
+use PubNub\PubNubException;
 
 class CouldNotSendNotification extends Exception
 {
-    public static function pubnubRespondedWithAnError(PubnubException $exception)
+    public static function pubnubRespondedWithAnError(PubNubException $exception)
     {
         return new static($exception->getMessage());
     }

@@ -2,7 +2,7 @@
 
 namespace NotificationChannels\Pubnub;
 
-use Pubnub\Pubnub;
+use PubNub\PubNub;
 use Illuminate\Support\ServiceProvider;
 
 class PubnubServiceProvider extends ServiceProvider
@@ -13,11 +13,11 @@ class PubnubServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->when(PubnubChannel::class)
-            ->needs(Pubnub::class)
+            ->needs(PubNub::class)
             ->give(function () {
                 $config = config('services.pubnub');
 
-                return new Pubnub(
+                return new PubNub(
                     $config['publish_key'],
                     $config['subscribe_key'],
                     $config['secret_key']
